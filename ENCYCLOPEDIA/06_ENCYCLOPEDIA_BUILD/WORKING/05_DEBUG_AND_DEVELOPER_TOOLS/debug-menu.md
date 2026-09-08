@@ -140,7 +140,8 @@ Last Decision во вкладке Mind юнита — **ваниль**, не deb
 ## LIMITATIONS
 
 Нет кнопки debug «выдать trait этому NPC».  
-Состав **6 вкладок** — LIVE CONFIRMED. Полные списки кнопок по вкладкам — ещё OPEN.  
+Состав **6 вкладок** — LIVE CONFIRMED.  
+Каталог выше — всё известное из базы с пометками размещения; полный dump кнопок с экрана — ещё OPEN.  
 Цикл clearDebugOnStart vs premiumDisabled — PARTIALLY CONFIRMED.
 
 ## RELATED SYSTEMS
