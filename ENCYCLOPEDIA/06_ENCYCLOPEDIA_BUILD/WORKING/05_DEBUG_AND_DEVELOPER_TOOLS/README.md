@@ -8,4 +8,4 @@ Mind tab (last Decision) доступен **без** debug.
 |---|---|
 | [Меню, unlock, инструменты](debug-menu.md) | как открыть, смотреть vs читы vs INTERNAL vs моды |
 
-**Статус:** CODE CONFIRMED. Клик burger ×11 в живой игре — REQUIRES LIVE VALIDATION (совпадает с wiki/Steam как привязка иконки).
+**Статус:** CODE CONFIRMED + LIVE: 6 вкладок окна (Абсолютно все / Отладочные стрелки / Карта / Курсор / Читы / Система). Полные списки кнопок по вкладкам — ещё OPEN. Клик burger ×11 — REQUIRES LIVE VALIDATION иконки (совпадает с wiki/Steam).
