@@ -37,15 +37,17 @@ Achievement `god_mode` при открытии окна debug.
 3. **New Debug Window** → `DebugTool` — **CONFIRMED** в player build (см. ниже)
 4. Overlay `DebugLayer` только пока bug-кнопка active (рисует зоны/чанки по опциям вкладок)
 
-### Как открыть New Debug Window — CONFIRMED (код + исследование билда)
+### Как открыть New Debug Window — CONFIRMED (код + LIVE игрок)
 
 ```
 Settings → GraphyCaller ×11 → bug HUD
   → открыть окно debug (6 вкладок)
-  → на РАМКЕ окна (не внутри списков вкладок) клик NewDebugWindow
+  → наверху / на РАМКЕ окна (не внутри списков вкладок) клик NewDebugWindow
   → DebugConfig.createTool("Game Info")
   → Instantiate(debugTool) → dropdown DebugToolAsset type == Default
 ```
+
+**LIVE (игрок):** сверху в debug-окне есть кнопки → открываются плавающие панельки с информацией; в списке режимов есть Actor AI и остальные DebugTool.
 
 Вторая кнопка рамки: `NewDebugWindow (1)` → сразу `Benchmark All` (dropdown type == Benchmarks).
 
@@ -329,7 +331,7 @@ Last Decision во вкладке Mind юнита — **ваниль**, не deb
 UnlockAll* / IgnoreDamage / UltraFastSpawn / TestAds / ShowHiddenStats / DebugTooltipActorAI как кнопки — **DEAD UI** в этом билде.  
 Где эффект только «по имени» — не выдавать за закрытое исследование.  
 Цикл clearDebugOnStart vs premiumDisabled — PARTIALLY CONFIRMED.  
-LIVE: подтвердить глазами кнопку рамки `NewDebugWindow` (не скролл вкладок).
+**LIVE CONFIRMED:** кнопки сверху debug-окна открывают DebugTool-панели (Actor AI и др.).
 
 ## RELATED SYSTEMS
 

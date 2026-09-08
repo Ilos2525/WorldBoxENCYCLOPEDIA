@@ -47,9 +47,9 @@ RESEARCH PRIORITY
 
 PARTIAL UPDATE (игрок + исследование билда)  
 Состав вкладок закрыт. Dump кнопок вкладок → `debug-menu.md`.  
-**CLOSED:** вход New Debug Window — кнопка рамки `NewDebugWindow` → DebugTool dropdown (Actor AI / Unit Info…).  
+**CLOSED:** вход New Debug Window — кнопки **сверху** окна debug → DebugTool dropdown (Actor AI / Unit Info…). **LIVE CONFIRMED** игроком.  
 **DEAD UI:** UnlockAll*, IgnoreDamage, UltraFastSpawn, TestAds, ShowHiddenStats, DebugTooltipActorAI (кнопок нет).  
-Остаётся OPEN: LIVE-подтверждение иконки рамки глазами; глубокие эффекты «по имени»; burger ×11; сохраняемость опций.
+Остаётся OPEN: глубокие эффекты «по имени»; burger ×11 иконка; сохраняемость опций.
 
 ---
 
