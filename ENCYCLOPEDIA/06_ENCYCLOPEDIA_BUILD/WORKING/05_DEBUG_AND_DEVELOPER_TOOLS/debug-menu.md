@@ -23,10 +23,43 @@ Achievement `god_mode` при открытии окна debug.
 
 ## Что доступно после unlock
 
-1. Bug HUD → окно `debug` (`UiDebugWindow`, `is_testable = false`)
-2. Вкладки фильтруют кнопки debug-опций (каталог ниже — LIVE)
-3. В коде также есть путь **New Debug Window → DebugTool** (Actor AI, Unit Info…); во вкладках окна debug этих кнопок **нет** (LIVE NEGATIVE). Как открыть New Debug Window в билде игрока — OPEN
-4. Overlay `DebugLayer` только пока bug-кнопка active
+Два разных UI (не путать):
+
+| | Первое окно | Второе меню |
+|---|---|---|
+| Что | окно `debug` / `UiDebugWindow` | плавающая панель `DebugTool` |
+| Как | bug-кнопка HUD | кнопка **рамки** первого окна: `NewDebugWindow` |
+| Содержимое | 6 вкладок тумблеров (`UiDebugButton` = DebugOption) | dropdown инструментов: Actor AI, Unit Info… |
+| Prefab | ScrollWindow id `debug` | `PrefabLibrary.debugTool` на `DebugConfig` |
+
+1. Bug HUD → окно `debug` (`is_testable = false`)
+2. Вкладки фильтруют DebugOption (каталог ниже — LIVE)
+3. **New Debug Window** → `DebugTool` — **CONFIRMED** в player build (см. ниже)
+4. Overlay `DebugLayer` только пока bug-кнопка active (рисует зоны/чанки по опциям вкладок)
+
+### Как открыть New Debug Window — CONFIRMED (код + исследование билда)
+
+```
+Settings → GraphyCaller ×11 → bug HUD
+  → открыть окно debug (6 вкладок)
+  → на РАМКЕ окна (не внутри списков вкладок) клик NewDebugWindow
+  → DebugConfig.createTool("Game Info")
+  → Instantiate(debugTool) → dropdown DebugToolAsset type == Default
+```
+
+Вторая кнопка рамки: `NewDebugWindow (1)` → сразу `Benchmark All` (dropdown type == Benchmarks).
+
+- Хоткея на DebugTool в релизе **нет**
+- `createTool` **не** завязан на `Config.isEditor` / `TRAILER_MODE`
+- `debug_enabled` = bug-кнопка active; на createTool не влияет
+- Панель закрыть: `DebugTool.clickClose()`; можно duplicate → ещё одна панель
+- Автоспавн панелей по `show_on_start` в релизе **мёртв**
+
+### Dropdown Default (примеры панелей)
+
+Game Info, Basic Info, **Unit Info**, **Actor Stats**, **Actor AI**, **Actor Decisions**, Decisions Globals Use, Selected Unit, City Info, **City Capture**, **City Loyalty**, city_jobs, City Tasks, City Professions, city_storage, Cities, **World Laws**, Kingdoms Civ, Kingdoms Wild, Armies, Cultures, Religions, Languages, Families, Subspecies, Population, Building Info, Boat AI, City AI, Kingdom AI, …
+
+UnlockAll / IgnoreDamage / ShowHiddenStats в этом dropdown **нет** — это не DebugTool.
 
 ### Вкладки окна debug — LIVE CONFIRMED (игрок)
 
@@ -204,32 +237,34 @@ Achievement `god_mode` при открытии окна debug.
 
 ---
 
-## Где НЕ искать: опции из кода без кнопок во вкладках
+## Где НЕ искать / DEAD UI / DebugTool
 
-**LIVE NEGATIVE (игрок):** по всем 6 вкладкам окна `debug` **нет** кнопок  
-`UnlockAll*`, `IgnoreDamage`, `UltraFastSpawn`, `TestAds`, `Actor AI`, `Unit Info`.
+**LIVE NEGATIVE во вкладках:** `UnlockAll*`, `IgnoreDamage`, `UltraFastSpawn`, `TestAds`, `Actor AI`, `Unit Info` — не `UiDebugButton`.
 
-Это не «недописанный dump». Игрок специально искал — их там нет.
-
-| Имя | Что говорит старое исследование | Где реально искать / статус |
+| Имя | Статус в этом билде | Где |
 |---|---|---|
-| UnlockAllTraits / Equipment / Genes / Actors / Plots | снимают lock ассетов | В коде есть `debugUnlockAll` / опции; **кнопок на главных вкладках нет** (`editors.md`). Во вкладках окна debug — **нет**. Не выдавать за доступную кнопку. |
-| IgnoreDamage | урон не проходит | Упоминался как DEBUG-опция в коде; **кнопки во вкладках нет**. Статус доступа: OPEN / возможно мёртвый UI или Editor-only. |
-| UltraFastSpawn | ещё быстрее FastSpawn | Рядом с FastSpawn в коде; в LIVE есть только **FastSpawn** (вкладка Абсолютно всё → General). Ultra — **кнопки нет**. |
-| TestAds | тест рекламы, persist | В паре с DisablePremium в старых заметках; в LIVE есть только **DisablePremium** (Система → Mobile). TestAds — **кнопки нет**. |
-| Actor AI / Unit Info / Actor Decisions / Actor Stats / ShowHiddenStats | инструменты наблюдения | Это не тумблеры вкладок. В архитектуре: **New Debug Window → DebugTool** панели + tooltip `DebugTooltipActorAI`. Как открыть New Debug Window с bug-HUD в этом билде — **OPEN / REQUIRES LIVE** (отдельная кнопка/окно, не вкладка). |
-| City Capture / Loyalty / city_jobs / World Laws tool | наблюдение | Тоже скорее DebugTool / отдельные tools, не чекбоксы 6 вкладок. |
-| CitizenJob* / DrawCitizenJobIcons | фильтры работ | В LIVE-dump вкладок **не найдены**. |
+| Actor AI / Unit Info / Actor Decisions / Actor Stats / City Capture / City Loyalty / city_jobs / World Laws | **VANILLA DEBUG** | NewDebugWindow → dropdown DebugTool |
+| UnlockAllTraits / Equipment / Genes / Actors / Plots | **DEAD UI** | enum/код есть (lock ассетов), GO кнопки в ассетах **нет** |
+| IgnoreDamage | **DEAD UI** | код в `getHit`, кнопки нет |
+| UltraFastSpawn | **DEAD UI** | код спавна есть, кнопки нет (есть только FastSpawn) |
+| TestAds | **DEAD UI** | код ads/persist, кнопки нет (есть DisablePremium) |
+| ShowHiddenStats | **DEAD UI** | только флаги `editor_maxim` / `editor_nikon` |
+| DebugTooltipActorAI | **DEAD UI** | если флаг ON — дописывает task/job в обычный tooltip; GO кнопки нет → из вкладок не включить |
+| debugUnlockAll | **INTERNAL / DEAD UI** | `ButtonEvent` → прогресс/ачивки, не UnlockAllTraits; без OnClick на prefab |
+| F7/F8 FastSpawn/Sonic | **INTERNAL** | только `TRAILER_MODE` (= false) |
+| initDebugHotkeys | **INTERNAL / DEAD** | не вызывается |
+| CitizenJob* / DrawCitizenJobIcons | не в LIVE-dump вкладок | статус UI OPEN |
 
-### Чем заменить наблюдение AI без Actor AI / Unit Info
+### Чем смотреть AI
 
-Пока DebugTool не найден на экране:
-
-| Вместо | Живые кнопки из dump |
+| Цель | Инструмент |
 |---|---|
-| кто кого бьёт / куда идёт | Отладочные стрелки: `ArrowsUnitsAttackTargets`, `ArrowsUnitsPaths`, `ArrowUnitsBehActorTarget` |
-| текст на юните под курсором | `OverlayCursorActor` + вкладка Курсор (`TargetedBy`, `UnitIsInside`, `UnitKingdoms`) |
-| last Decision | **ванильный** Mind у юнита (debug не нужен) |
+| job / task / action под курсором | DebugTool → **Actor AI** / **Unit Info** |
+| веса Decision | DebugTool → **Actor Decisions** |
+| last Decision | **ванильный Mind** (debug не нужен) |
+| стрелки на карте | вкладки Отладочные стрелки (дополнительно) |
+
+Не скроллить 6 вкладок в поисках «Actor AI». Клик по кнопкам **рамки** окна debug.
 
 ---
 
@@ -290,10 +325,11 @@ Last Decision во вкладке Mind юнита — **ваниль**, не deb
 
 Нет кнопки debug «выдать trait этому NPC».  
 Состав **6 вкладок** + каталог — LIVE от игрока.  
-**LIVE NEGATIVE:** UnlockAll*, IgnoreDamage, UltraFastSpawn, TestAds, Actor AI, Unit Info — **не** кнопки этих вкладок.  
+**New Debug Window → DebugTool** — CONFIRMED (рамка окна debug, не вкладки).  
+UnlockAll* / IgnoreDamage / UltraFastSpawn / TestAds / ShowHiddenStats / DebugTooltipActorAI как кнопки — **DEAD UI** в этом билде.  
 Где эффект только «по имени» — не выдавать за закрытое исследование.  
-Как открыть New Debug Window / DebugTool в этом билде — OPEN.  
-Цикл clearDebugOnStart vs premiumDisabled — PARTIALLY CONFIRMED.
+Цикл clearDebugOnStart vs premiumDisabled — PARTIALLY CONFIRMED.  
+LIVE: подтвердить глазами кнопку рамки `NewDebugWindow` (не скролл вкладок).
 
 ## RELATED SYSTEMS
 

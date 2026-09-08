@@ -38,9 +38,9 @@
 | Что увидеть | Где | Уровень |
 |---|---|---|
 | Последнее Decision | окно unit → **Mind** | VANILLA |
-| job / task / action / citizen_job | tooltip `DebugTooltipActorAI` | DEBUG |
-| веса Decision | tool `Actor Decisions` (`pGameplay: false`) | DEBUG |
-| job/task у курсора | tool `Actor AI` | DEBUG |
+| job / task / action / citizen_job | DebugTool → **Actor AI** (после NewDebugWindow на рамке debug) | DEBUG |
+| веса Decision | DebugTool → **Actor Decisions** | DEBUG |
+| job/task / attack_target у курсора | DebugTool → **Unit Info** / **Actor AI** | DEBUG |
 
 Mind `runSimulationForMindTab` не ставит gameplay task.
 

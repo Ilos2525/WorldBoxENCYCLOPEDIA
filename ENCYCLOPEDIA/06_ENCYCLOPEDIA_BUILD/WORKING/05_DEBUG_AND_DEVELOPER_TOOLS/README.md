@@ -8,4 +8,4 @@ Mind tab (last Decision) доступен **без** debug.
 |---|---|
 | [Меню, unlock, инструменты](debug-menu.md) | как открыть, смотреть vs читы vs INTERNAL vs моды |
 
-**Статус:** CODE CONFIRMED + LIVE: 6 вкладок и большой (неполный) dump кнопок от игрока в `debug-menu.md`. Эффекты: часть CONFIRMED, часть только «по имени». Burger ×11 — REQUIRES LIVE VALIDATION иконки.
+**Статус:** CODE + LIVE вкладки + **CLOSED** вход New Debug Window → DebugTool. UnlockAll*/IgnoreDamage/UltraFastSpawn/TestAds — DEAD UI. Часть эффектов тумблеров — «по имени». Burger ×11 иконка — REQUIRES LIVE VALIDATION.

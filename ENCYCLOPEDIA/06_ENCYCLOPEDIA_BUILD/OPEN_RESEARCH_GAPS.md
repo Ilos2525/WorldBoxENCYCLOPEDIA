@@ -45,11 +45,11 @@ WHICH ENCYCLOPEDIA ANSWERS IT BLOCKS
 RESEARCH PRIORITY  
 **P1** — только LIVE-прогон уже описанного. Не искать новые debug-классы.
 
-PARTIAL UPDATE (игрок, LIVE)  
-Состав вкладок debug-окна закрыт: **Абсолютно всё / Отладочные стрелки / Карта / Курсор / Читы / Система**.  
-Получен большой dump кнопок по вкладкам → `debug-menu.md`.  
-**LIVE NEGATIVE:** UnlockAll*, IgnoreDamage, UltraFastSpawn, TestAds, Actor AI, Unit Info — нет во вкладках.  
-Остаётся OPEN: вход в New Debug Window / DebugTool; глубокие эффекты «по имени»; burger ×11; сохраняемость опций.
+PARTIAL UPDATE (игрок + исследование билда)  
+Состав вкладок закрыт. Dump кнопок вкладок → `debug-menu.md`.  
+**CLOSED:** вход New Debug Window — кнопка рамки `NewDebugWindow` → DebugTool dropdown (Actor AI / Unit Info…).  
+**DEAD UI:** UnlockAll*, IgnoreDamage, UltraFastSpawn, TestAds, ShowHiddenStats, DebugTooltipActorAI (кнопок нет).  
+Остаётся OPEN: LIVE-подтверждение иконки рамки глазами; глубокие эффекты «по имени»; burger ×11; сохраняемость опций.
 
 ---
 
