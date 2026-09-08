@@ -45,6 +45,12 @@ WHICH ENCYCLOPEDIA ANSWERS IT BLOCKS
 RESEARCH PRIORITY  
 **P1** — только LIVE-прогон уже описанного. Не искать новые debug-классы.
 
+PARTIAL UPDATE (игрок + исследование билда)  
+Состав вкладок закрыт. Dump кнопок вкладок → `debug-menu.md`.  
+**CLOSED:** вход New Debug Window — кнопки **сверху** окна debug → DebugTool dropdown (Actor AI / Unit Info…). **LIVE CONFIRMED** игроком.  
+**DEAD UI:** UnlockAll*, IgnoreDamage, UltraFastSpawn, TestAds, ShowHiddenStats, DebugTooltipActorAI (кнопок нет).  
+Остаётся OPEN: глубокие эффекты «по имени»; burger ×11 иконка; сохраняемость опций.
+
 ---
 
 ## GAP-02 — Живая проверка редакторов (Traits / Subspecies)

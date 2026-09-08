@@ -138,9 +138,16 @@
 
 **Можно ли?** Да (DEBUG), Mind last Decision — Да (VANILLA без debug)
 
-**Шаги debug:** 11 кликов GraphyCaller (burger в settings — REQUIRES LIVE иконка) → bug HUD → `DebugTooltipActorAI` / tools Actor AI, Unit Info, Actor Decisions.
+**Шаги смотреть AI (DEBUG):**  
+1. GraphyCaller ×11 → bug HUD → окно debug  
+2. На **рамке** окна клик `NewDebugWindow` (не вкладки)  
+3. Dropdown панели: **Actor AI** / **Unit Info** / **Actor Decisions** / **Actor Stats**  
 
-**Не:** выдавать SonicSpeed за обычную игру. Unlock не в save. Консоль `~` = лог.
+Дополнительно на карте: стрелки + `OverlayCursorActor` + вкладка Курсор.  
+**Last Decision** — ванильный Mind (debug не нужен).
+
+**Не:** SonicSpeed за ваниль; Unlock не в save; `~` = лог.  
+UnlockAll* / IgnoreDamage / UltraFastSpawn / TestAds — **DEAD UI** (кнопок нет). Actor AI не искать во вкладках.
 
 ---
 
