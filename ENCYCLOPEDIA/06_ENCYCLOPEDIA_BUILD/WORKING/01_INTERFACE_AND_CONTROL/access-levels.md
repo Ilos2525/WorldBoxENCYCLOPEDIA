@@ -23,6 +23,8 @@ Premium: поля `requires_premium` / `PowerRank` есть в коде. Как�
 
 Окно `debug` и bug-кнопка HUD после 11 кликов `GraphyCaller`. Консоль `~` работает **без** этого unlock (лог).
 
+На рамке окна debug: `NewDebugWindow` → плавающая панель DebugTool (Actor AI, Unit Info…). Не путать с 6 вкладками тумблеров.
+
 Mind tab юнита (последнее Decision) — **ваниль**, не debug.
 
 Подробно: [05 Debug](../05_DEBUG_AND_DEVELOPER_TOOLS/debug-menu.md).
