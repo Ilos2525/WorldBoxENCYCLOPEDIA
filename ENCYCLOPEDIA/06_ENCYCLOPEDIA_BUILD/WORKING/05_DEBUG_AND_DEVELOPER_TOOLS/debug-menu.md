@@ -24,8 +24,8 @@ Achievement `god_mode` при открытии окна debug.
 ## Что доступно после unlock
 
 1. Bug HUD → окно `debug` (`UiDebugWindow`, `is_testable = false`)
-2. Вкладки фильтруют кнопки debug-опций
-3. New Debug Window → `DebugTool` панели (отдельные инструменты: Actor AI, Unit Info, Actor Decisions… — не путать с вкладками ниже)
+2. Вкладки фильтруют кнопки debug-опций (каталог ниже — LIVE)
+3. В коде также есть путь **New Debug Window → DebugTool** (Actor AI, Unit Info…); во вкладках окна debug этих кнопок **нет** (LIVE NEGATIVE). Как открыть New Debug Window в билде игрока — OPEN
 4. Overlay `DebugLayer` только пока bug-кнопка active
 
 ### Вкладки окна debug — LIVE CONFIRMED (игрок)
@@ -204,19 +204,72 @@ Achievement `god_mode` при открытии окна debug.
 
 ---
 
-## Есть в исследованиях, но НЕ в этом LIVE-списке
+## Где НЕ искать: опции из кода без кнопок во вкладках
 
-Игрок сказал dump неполный. Ранее в энциклопедии встречались (вкладка в LIVE не сверена / может быть в New Debug Window / другой группе):
+**LIVE NEGATIVE (игрок):** по всем 6 вкладкам окна `debug` **нет** кнопок  
+`UnlockAll*`, `IgnoreDamage`, `UltraFastSpawn`, `TestAds`, `Actor AI`, `Unit Info`.
 
-| Имя | Заметка |
+Это не «недописанный dump». Игрок специально искал — их там нет.
+
+| Имя | Что говорит старое исследование | Где реально искать / статус |
+|---|---|---|
+| UnlockAllTraits / Equipment / Genes / Actors / Plots | снимают lock ассетов | В коде есть `debugUnlockAll` / опции; **кнопок на главных вкладках нет** (`editors.md`). Во вкладках окна debug — **нет**. Не выдавать за доступную кнопку. |
+| IgnoreDamage | урон не проходит | Упоминался как DEBUG-опция в коде; **кнопки во вкладках нет**. Статус доступа: OPEN / возможно мёртвый UI или Editor-only. |
+| UltraFastSpawn | ещё быстрее FastSpawn | Рядом с FastSpawn в коде; в LIVE есть только **FastSpawn** (вкладка Абсолютно всё → General). Ultra — **кнопки нет**. |
+| TestAds | тест рекламы, persist | В паре с DisablePremium в старых заметках; в LIVE есть только **DisablePremium** (Система → Mobile). TestAds — **кнопки нет**. |
+| Actor AI / Unit Info / Actor Decisions / Actor Stats / ShowHiddenStats | инструменты наблюдения | Это не тумблеры вкладок. В архитектуре: **New Debug Window → DebugTool** панели + tooltip `DebugTooltipActorAI`. Как открыть New Debug Window с bug-HUD в этом билде — **OPEN / REQUIRES LIVE** (отдельная кнопка/окно, не вкладка). |
+| City Capture / Loyalty / city_jobs / World Laws tool | наблюдение | Тоже скорее DebugTool / отдельные tools, не чекбоксы 6 вкладок. |
+| CitizenJob* / DrawCitizenJobIcons | фильтры работ | В LIVE-dump вкладок **не найдены**. |
+
+### Чем заменить наблюдение AI без Actor AI / Unit Info
+
+Пока DebugTool не найден на экране:
+
+| Вместо | Живые кнопки из dump |
 |---|---|
-| UltraFastSpawn | ещё более быстрый спавн |
-| UnlockAllTraits / Equipment / Genes / Actors / Plots | снимают lock ассетов, не выдают trait выбранному |
-| IgnoreDamage | урон не проходит |
-| TestAds | тест рекламы; осторожно |
-| CitizenJob* фильтры, DrawCitizenJobIcons | работы города |
-| Actor AI, Unit Info, Actor Decisions, Actor Stats, ShowHiddenStats | скорее **DebugTool** панели / New Debug Window |
-| City Capture / Loyalty / city_jobs, World Laws tool | инструменты наблюдения |
+| кто кого бьёт / куда идёт | Отладочные стрелки: `ArrowsUnitsAttackTargets`, `ArrowsUnitsPaths`, `ArrowUnitsBehActorTarget` |
+| текст на юните под курсором | `OverlayCursorActor` + вкладка Курсор (`TargetedBy`, `UnitIsInside`, `UnitKingdoms`) |
+| last Decision | **ванильный** Mind у юнита (debug не нужен) |
+
+---
+
+## Что потыкать для масштабных наблюдений
+
+Цель: увидеть **большие** сдвиги симуляции, не микро-чит одного юнита.
+
+### A. Ускорить цивилизацию и смотреть рост — вкладка Читы
+
+Включить вместе: `CityInfiniteResources` + `CityFastConstruction` + `CityFastPopGrowth` + `CityFastZonesGrowth` + `CityFastUpgrades` (+ по желанию `FastCultures`, `UnitsAlwaysFast`).  
+Опционально сверху: `SonicSpeed` (Абсолютно всё).  
+Смотреть: взрывной рост городов, зон, домов, апгрейдов.
+
+### B. Выключить кусок мира и смотреть, что умрёт — вкладка Система
+
+По одному (чтобы было ясно, что сломалось):
+
+| Выключить | Ожидаемый масштабный эффект |
+|---|---|
+| `SystemProduceNewCitizens` | население перестаёт пополняться этим контуром |
+| `SystemZoneGrowth` | города перестают расползаться |
+| `SystemBuildTick` | стройка встаёт |
+| `SystemCityTasks` | городские работы/задачи стоп |
+| `SystemUpdateCities` | города «замирают» целиком |
+| `SystemUpdateUnits` | юниты перестают обновляться |
+| `SystemWorldBehaviours` | мировые поведения стоп |
+| `SystemUnitPathfinding` | массовый хаос движения / топтание |
+
+### C. Война и экспансия глазами стрелок — Отладочные стрелки + Карта
+
+Война: `KingdomDrawAttackTarget` + `ArrowsUnitsAttackTargets` + `ArrowsUnitsPaths` (+ `ActivePaths` на Карте).  
+Экспансия: `CivDrawSettleTarget` + `CivDrawCityClaimZone` + `CitySettleCalc` / `CityZones` / `RenderCityFarmPlaces`.  
+Социум: `Lovers` + `BuildingResidents`.
+
+### D. Не для «интересного мира»
+
+`DisablePremium` — ломает премиум.  
+`MakeUnitsFollowCursor` — ломает естественный AI.  
+`Parallel*` / `ChunkBatches` / `SystemSplitAStar` — тюнинг движка, не зрелище.  
+`Greg` — неизвестно; не первый кандидат.
 
 Last Decision во вкладке Mind юнита — **ваниль**, не debug.  
 Гены одного NPC в debug нет — смотри редактор подвида.
@@ -236,8 +289,10 @@ Last Decision во вкладке Mind юнита — **ваниль**, не deb
 ## LIMITATIONS
 
 Нет кнопки debug «выдать trait этому NPC».  
-Состав **6 вкладок** + этот каталог — LIVE от игрока; dump **неполный**.  
+Состав **6 вкладок** + каталог — LIVE от игрока.  
+**LIVE NEGATIVE:** UnlockAll*, IgnoreDamage, UltraFastSpawn, TestAds, Actor AI, Unit Info — **не** кнопки этих вкладок.  
 Где эффект только «по имени» — не выдавать за закрытое исследование.  
+Как открыть New Debug Window / DebugTool в этом билде — OPEN.  
 Цикл clearDebugOnStart vs premiumDisabled — PARTIALLY CONFIRMED.
 
 ## RELATED SYSTEMS

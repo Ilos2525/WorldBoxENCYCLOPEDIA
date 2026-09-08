@@ -47,8 +47,9 @@ RESEARCH PRIORITY
 
 PARTIAL UPDATE (игрок, LIVE)  
 Состав вкладок debug-окна закрыт: **Абсолютно всё / Отладочные стрелки / Карта / Курсор / Читы / Система**.  
-Получен большой (неполный) dump кнопок по вкладкам → записан в `debug-menu.md`.  
-Остаётся OPEN: добивка недостающих кнопок; глубокие эффекты пометок «по имени»; burger ×11; сохраняемость опций.
+Получен большой dump кнопок по вкладкам → `debug-menu.md`.  
+**LIVE NEGATIVE:** UnlockAll*, IgnoreDamage, UltraFastSpawn, TestAds, Actor AI, Unit Info — нет во вкладках.  
+Остаётся OPEN: вход в New Debug Window / DebugTool; глубокие эффекты «по имени»; burger ×11; сохраняемость опций.
 
 ---
 
